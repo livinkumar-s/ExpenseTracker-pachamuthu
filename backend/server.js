@@ -23,7 +23,8 @@ app.use(morgan('dev'));
 
 // CORS configuration - allow frontend access
 app.use(cors({
-    origin: ['http://localhost:5173'],
+    origin: ['http://localhost:5173',
+        'https://expense-tracker-pachamuthu.vercel.app/'],
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true,
@@ -129,10 +130,10 @@ app.use((req, res) => {
 // Error handling middleware
 app.use((err, req, res, next) => {
     console.error('Global Error Handler:', err.stack);
-    
+
     const statusCode = err.statusCode || 500;
     const message = err.message || 'Internal Server Error';
-    
+
     res.status(statusCode).json({
         success: false,
         message: message,
