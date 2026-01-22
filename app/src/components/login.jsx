@@ -19,7 +19,7 @@ const LoginPage = () => {
   });
 
   // API Configuration
-  const API_BASE_URL = 'https://expense-tracker-pachamuthu-e86f.vercel.app/api';
+  const API_BASE_URL = 'https://expense-tracker-pachamuthu-k5r3.vercel.app/api';
   const LOGIN_ENDPOINT = `${API_BASE_URL}/auth/login`;
   const REGISTER_ENDPOINT = `${API_BASE_URL}/auth/register`;
 
@@ -104,7 +104,7 @@ const LoginPage = () => {
           path: '/',
           maxAge: 604800,
           secure: true,
-          sameSite: 'strict'
+          sameSite: 'none'
         });
 
         // Store user data in localStorage
@@ -158,8 +158,7 @@ const LoginPage = () => {
         setCookie('token', data.token, {
           path: '/',
           maxAge: 604800,
-          secure: true,
-          sameSite: 'strict'
+          sameSite: 'none'
         });
 
         // Store user data
