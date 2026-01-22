@@ -86,7 +86,8 @@ const LoginPage = () => {
         body: JSON.stringify({
           email: formData.email,
           password: formData.password
-        })
+        }),
+        credentials: 'include'
       });
 
       const data = await response.json();
@@ -143,6 +144,7 @@ const LoginPage = () => {
           email: formData.email,
           password: formData.password
         }),
+        credentials: 'include'
       });
 
       const data = await response.json();
