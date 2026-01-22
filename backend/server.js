@@ -67,7 +67,7 @@ app.get('/api', (req, res) => {
         message: 'Expense Tracker API',
         version: '1.0.0',
         documentation: {
-            baseUrl: 'http://localhost:3333/api',
+            baseUrl: 'https://expense-tracker-pachamuthu-backend1-three.vercel.app/api',
             endpoints: {
                 auth: {
                     register: 'POST /api/auth/register',
