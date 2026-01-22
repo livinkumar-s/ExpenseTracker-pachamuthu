@@ -103,7 +103,7 @@ const LoginPage = () => {
         setCookie('token', data.token, {
           path: '/',
           maxAge: 604800,
-          secure: process.env.NODE_ENV === 'production',
+          secure: true,
           sameSite: 'strict'
         });
 
@@ -158,7 +158,7 @@ const LoginPage = () => {
         setCookie('token', data.token, {
           path: '/',
           maxAge: 604800,
-          secure: process.env.NODE_ENV === 'production',
+          secure: true,
           sameSite: 'strict'
         });
 
