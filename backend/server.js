@@ -24,7 +24,7 @@ app.use(morgan('dev'));
 // CORS configuration - allow frontend access
 app.use(cors({
     origin: ['http://localhost:5173',
-        'https://expense-tracker-pachamuthu.vercel.app/'],
+        'https://expense-tracker-pachamuthu.vercel.app'],
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true,
