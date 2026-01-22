@@ -32,7 +32,7 @@ import "./home.css"
 
 const ExpenseTracker = () => {
   // API Configuration
-  const API_BASE_URL = 'https://expense-tracker-pachamuthu-backend1-three.vercel.app/api';
+  const API_BASE_URL = 'https://expense-tracker-pachamuthu-e86f.vercel.app/api';
   const API_ENDPOINTS = {
     transactions: `${API_BASE_URL}/transactions`,
     summary: `${API_BASE_URL}/transactions/summary`,
