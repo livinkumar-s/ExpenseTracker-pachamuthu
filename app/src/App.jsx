@@ -1,28 +1,28 @@
-import React from 'react'
+import React, { useState } from 'react'
 import './App.css'
 import { Navigate, Route, Router, Routes } from 'react-router-dom'
 import Home from "./components/home.jsx"
 import Header from './components/header.jsx'
 import { CookiesProvider } from 'react-cookie'
 import LoginPage from './components/login.jsx'
-
-const PrivateRoute = ({ children }) => {
-  const token = document.cookie.includes('token=');
-  return token ? children : <Navigate to="/login" />;
-};
+import PrivateRoute from './components/PrivateRoute.jsx'
 
 function App() {
+
+
+  const [authorized, setAuthorized] = useState(false);
+  const [user,setUser]=useState(null)
   return (
     <CookiesProvider>
       <div className="App">
-        <Header />
+        <Header user={user} authorized={authorized} />
         <Routes>
           <Route path="/" element={
-            <PrivateRoute>
+            <PrivateRoute setUser={setUser} authorized={authorized} setAuthorized={setAuthorized}>
               <Home />
             </PrivateRoute>
           } />
-          <Route path="/login" element={<LoginPage />} />
+          <Route path="/login" element={<LoginPage setUser={setUser} />} />
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       </div>

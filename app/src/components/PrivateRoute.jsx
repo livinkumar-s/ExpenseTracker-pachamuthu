@@ -1,0 +1,37 @@
+import { Navigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+
+const PrivateRoute = ({ children, authorized, setAuthorized,setUser }) => {
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const checkAuth = async () => {
+            try {
+                const res = await fetch("http://localhost:3333/api/auth/me", {
+                    credentials: "include"
+                });
+
+                const result = await res.json()
+
+                if (res.ok) {
+                    setAuthorized(true);
+                    setUser(result.data)
+                } else {
+                    setAuthorized(false);
+                }
+            } catch {
+                setAuthorized(false);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        checkAuth();
+    }, []);
+
+    if (loading) return null; // or loader
+
+    return authorized ? children : <Navigate to="/login" />;
+};
+
+export default PrivateRoute;

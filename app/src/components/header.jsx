@@ -3,33 +3,35 @@ import { useNavigate } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
 import "./header.css"
 
-const Header = () => {
+const Header = ({ authorized, user }) => {
   const navigate = useNavigate();
-  const [cookies] = useCookies(['token']);
-  const isLoggedIn = !!cookies.token;
 
   const handleLoginClick = () => {
     navigate('/login');
   };
 
-  const handleLogout = () => {
-    // Remove token cookie
-    document.cookie = 'token=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-    // Clear user data
-    localStorage.removeItem('user');
-    // Redirect to login
-    navigate('/login');
-  };
+const handleLogout = async () => {
+  try {
+    await fetch("http://localhost:3333/api/auth/logout", {
+      method: "POST",
+      credentials: "include",
+    });
+
+    localStorage.removeItem("user");
+
+    window.location.href = "/login";
+  } catch (error) {
+    console.error("Logout failed", error);
+  }
+};
+
 
   const handleHomeClick = () => {
     navigate('/');
   };
 
-  const user = JSON.parse(localStorage.getItem("user"));
 
-  const hasToken = document.cookie
-    .split("; ")
-    .some(row => row.startsWith("token="));
+
 
   return (
     <header className="header">
@@ -39,7 +41,7 @@ const Header = () => {
       </div>
 
       <div className="header-right">
-        {hasToken && (<div className="user-section">
+        {authorized && (<div className="user-section">
           <div className="user-icon">
             👤
           </div>
@@ -48,7 +50,7 @@ const Header = () => {
             <span className="user-email">{user.email}</span>
           </div>
         </div>)}
-        {isLoggedIn ? (
+        {authorized ? (
           <button
             className="logout-btn"
             onClick={handleLogout}
@@ -66,6 +68,8 @@ const Header = () => {
           </button>
         )}
       </div>
+
+
     </header>
   );
 };

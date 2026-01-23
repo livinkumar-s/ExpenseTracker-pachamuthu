@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { 
-  faWallet, 
-  faArrowUp, 
-  faArrowDown, 
-  faPlusCircle, 
-  faHistory, 
-  faChartPie, 
-  faChartBar, 
-  faPiggyBank, 
+import {
+  faWallet,
+  faArrowUp,
+  faArrowDown,
+  faPlusCircle,
+  faHistory,
+  faChartPie,
+  faChartBar,
+  faPiggyBank,
   faShieldAlt,
   faTag,
   faDollarSign,
@@ -32,7 +32,7 @@ import "./home.css"
 
 const ExpenseTracker = () => {
   // API Configuration
-  const API_BASE_URL = 'https://expense-tracker-pachamuthu-k5r3.vercel.app/api';
+  const API_BASE_URL = 'http://localhost:3333/api';
   const API_ENDPOINTS = {
     transactions: `${API_BASE_URL}/transactions`,
     summary: `${API_BASE_URL}/transactions/summary`,
@@ -58,7 +58,7 @@ const ExpenseTracker = () => {
     monthBalance: 0,
     expenseRatio: 0
   });
-  
+
   // Month selection state
   const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth() + 1); // Current month (1-12)
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
@@ -70,7 +70,7 @@ const ExpenseTracker = () => {
     transactionCount: 0,
     transactions: []
   });
-  
+
   const [formData, setFormData] = useState({
     title: '',
     amount: '',
@@ -105,13 +105,13 @@ const ExpenseTracker = () => {
     const today = new Date();
     const yesterday = new Date(today);
     yesterday.setDate(yesterday.getDate() - 1);
-    
+
     if (date.toDateString() === today.toDateString()) {
       return 'Today';
     } else if (date.toDateString() === yesterday.toDateString()) {
       return 'Yesterday';
     }
-    
+
     return date.toLocaleDateString('en-US', {
       month: 'short',
       day: 'numeric',
@@ -126,7 +126,7 @@ const ExpenseTracker = () => {
       message,
       type
     });
-    
+
     setTimeout(() => {
       setToast(prev => ({ ...prev, show: false }));
     }, 3000);
@@ -163,12 +163,12 @@ const ExpenseTracker = () => {
     const currentDate = new Date();
     const currentYear = currentDate.getFullYear();
     const currentMonth = currentDate.getMonth() + 1;
-    
+
     // Don't allow future months
     if (selectedYear === currentYear && selectedMonth === currentMonth) {
       return;
     }
-    
+
     if (selectedMonth === 12) {
       setSelectedMonth(1);
       setSelectedYear(selectedYear + 1);
@@ -182,13 +182,13 @@ const ExpenseTracker = () => {
     try {
       setLoading(prev => ({ ...prev, transactions: true }));
       const response = await fetch(API_ENDPOINTS.transactions, {
-        credentials: 'include' 
+        credentials: 'include'
       });
-      
+
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
-      
+
       const data = await response.json();
       if (data.success) {
         setTransactions(data.data || []);
@@ -208,11 +208,11 @@ const ExpenseTracker = () => {
       const response = await fetch(API_ENDPOINTS.summary, {
         credentials: 'include'
       });
-      
+
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
-      
+
       const data = await response.json();
       if (data.success) {
         setSummary(data);
@@ -229,11 +229,11 @@ const ExpenseTracker = () => {
       const response = await fetch(`${API_ENDPOINTS.monthly}?year=${year}&month=${month}`, {
         credentials: 'include'
       });
-      
+
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
-      
+
       const data = await response.json();
       if (data.success) {
         setMonthlyReport({
@@ -259,11 +259,11 @@ const ExpenseTracker = () => {
       const response = await fetch(API_ENDPOINTS.categories, {
         credentials: 'include'
       });
-      
+
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
-      
+
       const data = await response.json();
       if (data.success) {
         setCategories(data.data);
@@ -286,13 +286,13 @@ const ExpenseTracker = () => {
         credentials: 'include',
         body: JSON.stringify(transactionData)
       });
-      
+
       const data = await response.json();
-      
+
       if (!response.ok) {
         throw new Error(data.message || 'Failed to add transaction');
       }
-      
+
       return data;
     } catch (error) {
       console.error('Error adding transaction:', error);
@@ -310,13 +310,13 @@ const ExpenseTracker = () => {
         credentials: 'include',
         body: JSON.stringify(transactionData)
       });
-      
+
       const data = await response.json();
-      
+
       if (!response.ok) {
         throw new Error(data.message || 'Failed to update transaction');
       }
-      
+
       return data;
     } catch (error) {
       console.error('Error updating transaction:', error);
@@ -330,13 +330,13 @@ const ExpenseTracker = () => {
         method: 'DELETE',
         credentials: 'include'
       });
-      
+
       const data = await response.json();
-      
+
       if (!response.ok) {
         throw new Error(data.message || 'Failed to delete transaction');
       }
-      
+
       return data;
     } catch (error) {
       console.error('Error deleting transaction:', error);
@@ -378,14 +378,14 @@ const ExpenseTracker = () => {
   // Handle form submit
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     const { title, amount, category, date } = formData;
-    
+
     if (!title || !amount || !category || !date) {
       showToast('Please fill in all fields', 'error');
       return;
     }
-    
+
     const transactionData = {
       title,
       amount: parseFloat(amount),
@@ -393,35 +393,35 @@ const ExpenseTracker = () => {
       category,
       date
     };
-    
+
     try {
       if (isEditing) {
         // Update existing transaction
         await updateTransactionAPI(editingId, transactionData);
         showToast('Transaction updated successfully!');
-        
+
         // Reset editing state
         setIsEditing(false);
         setEditingId(null);
       } else {
         // Add new transaction
         const result = await addTransactionAPI(transactionData);
-        
+
         // Add to local state
         const newTransaction = result.data;
         const updatedTransactions = [newTransaction, ...transactions];
         setTransactions(updatedTransactions);
         filterTransactions(updatedTransactions, currentFilter);
-        
+
         showToast(`${transactionType.charAt(0).toUpperCase() + transactionType.slice(1)} added successfully!`);
       }
-      
+
       // Refresh all data
       await Promise.all([
         fetchSummary(),
         fetchMonthlyReport(selectedYear, selectedMonth)
       ]);
-      
+
       // Reset form
       setFormData({
         title: '',
@@ -453,18 +453,18 @@ const ExpenseTracker = () => {
     if (window.confirm(`Are you sure you want to delete "${title}"?`)) {
       try {
         await deleteTransactionAPI(id);
-        
+
         // Remove from local state
         const updatedTransactions = transactions.filter(t => t._id !== id);
         setTransactions(updatedTransactions);
         filterTransactions(updatedTransactions, currentFilter);
-        
+
         // Refresh data
         await Promise.all([
           fetchSummary(),
           fetchMonthlyReport(selectedYear, selectedMonth)
         ]);
-        
+
         showToast('Transaction deleted successfully!');
       } catch (error) {
         showToast(error.message || 'Failed to delete transaction', 'error');
@@ -570,13 +570,13 @@ const ExpenseTracker = () => {
           </h2>
           <div className="form-container">
             <div className="form-toggle">
-              <button 
+              <button
                 className={`toggle-btn ${transactionType === 'income' ? 'active' : ''}`}
                 onClick={() => handleTransactionTypeToggle('income')}
               >
                 Income
               </button>
-              <button 
+              <button
                 className={`toggle-btn ${transactionType === 'expense' ? 'active' : ''}`}
                 onClick={() => handleTransactionTypeToggle('expense')}
               >
@@ -653,17 +653,17 @@ const ExpenseTracker = () => {
 
               <div className="form-buttons">
                 <button type="submit" className="submit-btn" style={{
-                  background: transactionType === 'income' 
+                  background: transactionType === 'income'
                     ? 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)'
                     : 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)'
                 }}>
                   <FontAwesomeIcon icon={isEditing ? faSave : faPlus} />
                   {isEditing ? 'Update Transaction' : `Add ${transactionType.charAt(0).toUpperCase() + transactionType.slice(1)}`}
                 </button>
-                
+
                 {isEditing && (
-                  <button 
-                    type="button" 
+                  <button
+                    type="button"
                     className="cancel-btn"
                     onClick={handleResetForm}
                   >
@@ -684,14 +684,14 @@ const ExpenseTracker = () => {
                 <FontAwesomeIcon icon={faCalendarAlt} /> Monthly Report
               </h2>
               <div className="month-navigation">
-                <button 
+                <button
                   className="nav-btn"
                   onClick={handlePreviousMonth}
                   disabled={loading.monthly}
                 >
                   <FontAwesomeIcon icon={faChevronLeft} />
                 </button>
-                
+
                 <div className="month-display">
                   <select
                     value={selectedMonth}
@@ -705,7 +705,7 @@ const ExpenseTracker = () => {
                       </option>
                     ))}
                   </select>
-                  
+
                   <select
                     value={selectedYear}
                     onChange={(e) => setSelectedYear(parseInt(e.target.value))}
@@ -719,19 +719,19 @@ const ExpenseTracker = () => {
                     ))}
                   </select>
                 </div>
-                
-                <button 
+
+                <button
                   className="nav-btn"
                   onClick={handleNextMonth}
-                  disabled={loading.monthly || 
-                    (selectedYear === new Date().getFullYear() && 
-                     selectedMonth === new Date().getMonth() + 1)}
+                  disabled={loading.monthly ||
+                    (selectedYear === new Date().getFullYear() &&
+                      selectedMonth === new Date().getMonth() + 1)}
                 >
                   <FontAwesomeIcon icon={faChevronRight} />
                 </button>
               </div>
             </div>
-            
+
             {/* Monthly Summary Stats */}
             <div className="monthly-stats">
               <div className="stat-card">
@@ -770,19 +770,19 @@ const ExpenseTracker = () => {
               </span>
             </h3>
             <div className="filter-buttons">
-              <button 
+              <button
                 className={`filter-btn ${currentFilter === 'all' ? 'active' : ''}`}
                 onClick={() => handleFilterChange('all')}
               >
                 All
               </button>
-              <button 
+              <button
                 className={`filter-btn ${currentFilter === 'income' ? 'active' : ''}`}
                 onClick={() => handleFilterChange('income')}
               >
                 Income
               </button>
-              <button 
+              <button
                 className={`filter-btn ${currentFilter === 'expense' ? 'active' : ''}`}
                 onClick={() => handleFilterChange('expense')}
               >
@@ -821,37 +821,37 @@ const ExpenseTracker = () => {
                       return transaction.type === currentFilter;
                     })
                     .map((transaction, index) => (
-                    <div 
-                      key={transaction._id}
-                      className={`transaction-item ${transaction.type} animate-slide-right`}
-                      style={{ animationDelay: `${index * 0.05}s` }}
-                    >
-                      <div className="transaction-info">
-                        <h4>{transaction.title}</h4>
-                        <div className="transaction-meta">
-                          <span><FontAwesomeIcon icon={faTag} /> {transaction.category}</span>
-                          <span><FontAwesomeIcon icon={faCalendar} /> {formatDate(transaction.date)}</span>
+                      <div
+                        key={transaction._id}
+                        className={`transaction-item ${transaction.type} animate-slide-right`}
+                        style={{ animationDelay: `${index * 0.05}s` }}
+                      >
+                        <div className="transaction-info">
+                          <h4>{transaction.title}</h4>
+                          <div className="transaction-meta">
+                            <span><FontAwesomeIcon icon={faTag} /> {transaction.category}</span>
+                            <span><FontAwesomeIcon icon={faCalendar} /> {formatDate(transaction.date)}</span>
+                          </div>
+                        </div>
+                        <div className={`transaction-amount ${transaction.type === 'income' ? 'positive' : 'negative'}`}>
+                          {transaction.type === 'income' ? '+' : '-'}{formatCurrency(transaction.amount)}
+                        </div>
+                        <div className="transaction-actions">
+                          <button
+                            className="action-btn edit-btn"
+                            onClick={() => handleEditTransaction(transaction)}
+                          >
+                            <FontAwesomeIcon icon={faEdit} />
+                          </button>
+                          <button
+                            className="action-btn delete-btn"
+                            onClick={() => handleDeleteTransaction(transaction._id, transaction.title)}
+                          >
+                            <FontAwesomeIcon icon={faTrash} />
+                          </button>
                         </div>
                       </div>
-                      <div className={`transaction-amount ${transaction.type === 'income' ? 'positive' : 'negative'}`}>
-                        {transaction.type === 'income' ? '+' : '-'}{formatCurrency(transaction.amount)}
-                      </div>
-                      <div className="transaction-actions">
-                        <button 
-                          className="action-btn edit-btn"
-                          onClick={() => handleEditTransaction(transaction)}
-                        >
-                          <FontAwesomeIcon icon={faEdit} />
-                        </button>
-                        <button 
-                          className="action-btn delete-btn"
-                          onClick={() => handleDeleteTransaction(transaction._id, transaction.title)}
-                        >
-                          <FontAwesomeIcon icon={faTrash} />
-                        </button>
-                      </div>
-                    </div>
-                  ))}
+                    ))}
                 </div>
               )}
             </div>
@@ -881,20 +881,20 @@ const ExpenseTracker = () => {
                   <span>{monthlyReport.expenseRatio.toFixed(1)}%</span>
                 </div>
                 <div className="progress-bar">
-                  <div 
+                  <div
                     className="progress-fill"
                     style={{ width: `${Math.min(monthlyReport.expenseRatio, 100)}%` }}
                   ></div>
                 </div>
                 <div className="progress-info">
                   <small>
-                    {monthlyReport.expenseRatio > 100 
-                      ? 'Spending exceeds income!' 
-                      : monthlyReport.expenseRatio > 80 
-                      ? 'High spending ratio' 
-                      : monthlyReport.expenseRatio > 50 
-                      ? 'Moderate spending' 
-                      : 'Good spending control'}
+                    {monthlyReport.expenseRatio > 100
+                      ? 'Spending exceeds income!'
+                      : monthlyReport.expenseRatio > 80
+                        ? 'High spending ratio'
+                        : monthlyReport.expenseRatio > 50
+                          ? 'Moderate spending'
+                          : 'Good spending control'}
                   </small>
                 </div>
               </div>
@@ -919,7 +919,7 @@ const ExpenseTracker = () => {
           <div className="toast-content">
             <FontAwesomeIcon icon={
               toast.type === 'error' ? faExclamationCircle :
-              toast.type === 'warning' ? faExclamationTriangle : faCheckCircle
+                toast.type === 'warning' ? faExclamationTriangle : faCheckCircle
             } />
             <span className="toast-message">{toast.message}</span>
           </div>

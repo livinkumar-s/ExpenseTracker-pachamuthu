@@ -13,9 +13,6 @@ const protect = async (req, res, next) => {
     else if (req.cookies && req.cookies.token) {
         token = req.cookies.token;
     }
-    console.log(req.cookies);
-
-    console.log(token);
 
 
     // Make sure token exists

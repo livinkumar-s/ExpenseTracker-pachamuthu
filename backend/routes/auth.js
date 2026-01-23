@@ -7,6 +7,7 @@ const { generateToken } = require('../middleware/auth');
 // @desc    Register user
 // @route   POST /api/auth/register
 // @access  Public
+
 router.post('/register', async (req, res) => {
     try {
         // Check for validation errors
@@ -196,5 +197,17 @@ router.get('/logout', (req, res) => {
         message: 'Logged out successfully'
     });
 });
+
+router.post("/logout", (req, res) => {
+    res.clearCookie("token", {
+        httpOnly: true,
+        secure: true,
+        sameSite: "strict",
+    });
+
+    res.status(200).json({
+        message: "Logged out successfully",
+    });
+})
 
 module.exports = router;

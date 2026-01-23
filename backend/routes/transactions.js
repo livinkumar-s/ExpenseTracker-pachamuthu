@@ -13,6 +13,13 @@ const DEFAULT_CATEGORIES = {
 // All routes are now protected
 router.use(protect);
 
+router.get('/me', (req, res) => {
+  res.json({
+    success: true,
+    user: req.user
+  });
+});
+
 // ✅ GET /api/transactions - Get all transactions for logged in user
 router.get('/', async (req, res) => {
     try {

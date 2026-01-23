@@ -3,9 +3,8 @@ import { useNavigate, Link } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
 import './login.css';
 
-const LoginPage = () => {
+const LoginPage = ({ setUser }) => {
   const navigate = useNavigate();
-  const [cookies, setCookie] = useCookies(['token']);
   const [isLogin, setIsLogin] = useState(true);
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({});
@@ -19,7 +18,7 @@ const LoginPage = () => {
   });
 
   // API Configuration
-  const API_BASE_URL = 'https://expense-tracker-pachamuthu-k5r3.vercel.app/api';
+  const API_BASE_URL = 'http://localhost:3333/api';
   const LOGIN_ENDPOINT = `${API_BASE_URL}/auth/login`;
   const REGISTER_ENDPOINT = `${API_BASE_URL}/auth/register`;
 
@@ -102,7 +101,8 @@ const LoginPage = () => {
 
         // Store user data in localStorage
         if (data.user) {
-          localStorage.setItem('user', JSON.stringify(data.user));
+          console.log(data);
+          setUser(data.user)
         }
 
         // Navigate to home page
@@ -147,11 +147,8 @@ const LoginPage = () => {
       }
 
       if (data.success) {
+        setUser(data.user)
 
-        // Store user data
-        if (data.user) {
-          localStorage.setItem('user', JSON.stringify(data.user));
-        }
 
         // Navigate to home page
         navigate('/');
