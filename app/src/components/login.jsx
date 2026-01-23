@@ -91,21 +91,14 @@ const LoginPage = () => {
       });
 
       const data = await response.json();
-      console.log(data);
 
 
       if (!response.ok) {
         throw new Error(data.message || 'Login failed');
       }
 
-      if (data.success && data.token) {
-        // Store token in cookie (expires in 7 days)
-        setCookie('token', data.token, {
-          path: '/',
-          maxAge: 604800,
-          secure: true,
-          sameSite: 'none'
-        });
+      if (data.success) {
+
 
         // Store user data in localStorage
         if (data.user) {
@@ -153,13 +146,7 @@ const LoginPage = () => {
         throw new Error(data.message || 'Registration failed');
       }
 
-      if (data.success && data.token) {
-        // Store token in cookie
-        setCookie('token', data.token, {
-          path: '/',
-          maxAge: 604800,
-          sameSite: 'none'
-        });
+      if (data.success) {
 
         // Store user data
         if (data.user) {

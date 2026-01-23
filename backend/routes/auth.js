@@ -12,8 +12,8 @@ router.post('/register', async (req, res) => {
         // Check for validation errors
 
         console.log(req.body);
-        
-        
+
+
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
             return res.status(400).json({
@@ -42,12 +42,17 @@ router.post('/register', async (req, res) => {
 
         // Generate JWT token
         const token = generateToken(user._id);
+        res.cookie("token", token, {
+            httpOnly: true,
+            secure: true,
+            sameSite: "none",
+            maxAge: 7 * 24 * 60 * 60 * 1000
+        });
 
         // Send response with token
         res.status(201).json({
             success: true,
             message: 'Registration successful',
-            token,
             user: {
                 id: user._id,
                 name: user.name,
@@ -75,7 +80,7 @@ router.post('/login', [
         .notEmpty().withMessage('Email is required')
         .isEmail().withMessage('Please enter a valid email')
         .normalizeEmail(),
-    
+
     body('password')
         .notEmpty().withMessage('Password is required')
 ], async (req, res) => {
@@ -113,10 +118,15 @@ router.post('/login', [
         const token = generateToken(user._id);
 
         // Send response with token
+        res.cookie("token", token, {
+            httpOnly: true,
+            secure: true,
+            sameSite: "none",
+            maxAge: 7 * 24 * 60 * 60 * 1000
+        });
         res.json({
             success: true,
             message: 'Login successful',
-            token,
             user: {
                 id: user._id,
                 name: user.name,
@@ -142,7 +152,7 @@ router.get('/me', async (req, res) => {
         // This route should be protected with auth middleware
         // For now, we'll check the token in the request
         const token = req.headers.authorization?.split(' ')[1] || req.cookies?.token;
-        
+
         if (!token) {
             return res.status(401).json({
                 success: false,
@@ -153,9 +163,9 @@ router.get('/me', async (req, res) => {
         // Verify token and get user
         const jwt = require('jsonwebtoken');
         const decoded = jwt.verify(token, process.env.JWT_SECRET || 'your_jwt_secret_change_this');
-        
+
         const user = await User.findById(decoded.id).select('-password');
-        
+
         if (!user) {
             return res.status(404).json({
                 success: false,
