@@ -7,7 +7,7 @@ const PrivateRoute = ({ children, authorized, setAuthorized,setUser }) => {
     useEffect(() => {
         const checkAuth = async () => {
             try {
-                const res = await fetch("http://localhost:3333/api/auth/me", {
+                const res = await fetch("https://expense-tracker-pachamuthu-k5r3.vercel.app/api/auth/me", {
                     credentials: "include"
                 });
 

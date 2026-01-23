@@ -18,7 +18,7 @@ const LoginPage = ({ setUser }) => {
   });
 
   // API Configuration
-  const API_BASE_URL = 'http://localhost:3333/api';
+  const API_BASE_URL = 'https://expense-tracker-pachamuthu-k5r3.vercel.app/api';
   const LOGIN_ENDPOINT = `${API_BASE_URL}/auth/login`;
   const REGISTER_ENDPOINT = `${API_BASE_URL}/auth/register`;
 
