@@ -1,0 +1,65 @@
+/* LoadingAnimation.css - Option 1 */
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background-color: #f5f5f5;
+}
+
+.loading-text {
+  font-size: 3rem;
+  font-weight: bold;
+  margin-bottom: 2rem;
+  font-family: 'Arial', sans-serif;
+}
+
+.loading-letter {
+  display: inline-block;
+  animation: bounce 1.5s infinite;
+  color: #3498db;
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+    color: #3498db;
+  }
+  50% {
+    transform: translateY(-20px);
+    color: #2ecc71;
+  }
+}
+
+.loading-dots {
+  display: flex;
+  gap: 10px;
+}
+
+.dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: #3498db;
+  animation: pulse 1.4s infinite ease-in-out;
+}
+
+.dot:nth-child(1) {
+  animation-delay: -0.32s;
+}
+
+.dot:nth-child(2) {
+  animation-delay: -0.16s;
+}
+
+@keyframes pulse {
+  0%, 80%, 100% {
+    transform: scale(0);
+    opacity: 0.5;
+  }
+  40% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}

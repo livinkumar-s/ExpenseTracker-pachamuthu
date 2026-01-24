@@ -6,21 +6,24 @@ import Header from './components/header.jsx'
 import { CookiesProvider } from 'react-cookie'
 import LoginPage from './components/login.jsx'
 import PrivateRoute from './components/PrivateRoute.jsx'
+import LoadingAnimation from "./components/loadingAnimation.jsx"
 
 function App() {
-    const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(true);
 
 
   const [authorized, setAuthorized] = useState(false);
-  const [user,setUser]=useState(null)
+  const [user, setUser] = useState(null)
   return (
     <CookiesProvider>
       <div className="App">
-        <Header loading={loading} setUser={setUser} user={user} authorized={authorized} setAuthorized={setAuthorized}/>
+        <Header loading={loading} setUser={setUser} user={user} authorized={authorized} setAuthorized={setAuthorized} />
         <Routes>
           <Route path="/" element={
             <PrivateRoute loading={loading} setLoading={setLoading} setUser={setUser} authorized={authorized} setAuthorized={setAuthorized}>
-              <Home />
+              {
+                loading ? <LoadingAnimation /> : <Home />
+              }
             </PrivateRoute>
           } />
           <Route path="/login" element={<LoginPage setAuthorized={setAuthorized} setUser={setUser} />} />
