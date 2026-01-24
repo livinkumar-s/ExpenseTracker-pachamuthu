@@ -13,7 +13,7 @@ const Header = ({ authorized, user, setUser, setAuthorized }) => {
   const handleLogout = async (e) => {
 
     try {
-      const res = await fetch("http://localhost:3333/api/auth/logout", {
+      const res = await fetch("https://expense-tracker-pachamuthu-k5r3.vercel.app/api/auth/logout", {
         method: "POST",
         credentials: "include",
       });
