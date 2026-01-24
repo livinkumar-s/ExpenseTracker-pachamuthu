@@ -8,6 +8,7 @@ import LoginPage from './components/login.jsx'
 import PrivateRoute from './components/PrivateRoute.jsx'
 
 function App() {
+    const [loading, setLoading] = useState(true);
 
 
   const [authorized, setAuthorized] = useState(false);
@@ -15,14 +16,14 @@ function App() {
   return (
     <CookiesProvider>
       <div className="App">
-        <Header setUser={setUser} user={user} authorized={authorized} setAuthorized={setAuthorized}/>
+        <Header loading={loading} setUser={setUser} user={user} authorized={authorized} setAuthorized={setAuthorized}/>
         <Routes>
           <Route path="/" element={
-            <PrivateRoute setUser={setUser} authorized={authorized} setAuthorized={setAuthorized}>
+            <PrivateRoute loading={loading} setLoading={setLoading} setUser={setUser} authorized={authorized} setAuthorized={setAuthorized}>
               <Home />
             </PrivateRoute>
           } />
-          <Route path="/login" element={<LoginPage setUser={setUser} />} />
+          <Route path="/login" element={<LoginPage setAuthorized={setAuthorized} setUser={setUser} />} />
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       </div>

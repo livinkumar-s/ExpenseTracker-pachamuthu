@@ -3,7 +3,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
 import './login.css';
 
-const LoginPage = ({ setUser }) => {
+const LoginPage = ({ setAuthorized,setUser }) => {
   const navigate = useNavigate();
   const [isLogin, setIsLogin] = useState(true);
   const [loading, setLoading] = useState(false);
@@ -101,8 +101,8 @@ const LoginPage = ({ setUser }) => {
 
         // Store user data in localStorage
         if (data.user) {
-          console.log(data);
           setUser(data.user)
+          setAuthorized(true)
         }
 
         // Navigate to home page
@@ -148,6 +148,7 @@ const LoginPage = ({ setUser }) => {
 
       if (data.success) {
         setUser(data.user)
+        setAuthorized(true)
 
 
         // Navigate to home page

@@ -1,8 +1,7 @@
 import { Navigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 
-const PrivateRoute = ({ children, authorized, setAuthorized,setUser }) => {
-    const [loading, setLoading] = useState(true);
+const PrivateRoute = ({ children, authorized, setAuthorized,setUser,loading, setLoading}) => {
 
     useEffect(() => {
         const checkAuth = async () => {

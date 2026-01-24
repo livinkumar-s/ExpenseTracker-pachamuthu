@@ -1,11 +1,11 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
 import "./header.css"
 
-const Header = ({ authorized, user, setUser, setAuthorized }) => {
+const Header = ({ loading, authorized, user, setUser, setAuthorized }) => {
   const navigate = useNavigate();
-
+  const location = useLocation();
   const handleLoginClick = () => {
     navigate('/login');
   };
@@ -43,7 +43,7 @@ const Header = ({ authorized, user, setUser, setAuthorized }) => {
         <h1 className="logo">Expense<span className="logo-highlight">Flow</span></h1>
       </div>
 
-      <div className="header-right">
+      {!loading && location.pathname !== "/login" && (<div className="header-right">
         {authorized && (<div className="user-section">
           <div className="user-icon">
             👤
@@ -70,7 +70,7 @@ const Header = ({ authorized, user, setUser, setAuthorized }) => {
             <span>Login / Register</span>
           </button>
         )}
-      </div>
+      </div>)}
 
 
     </header>
