@@ -3,27 +3,30 @@ import { useNavigate } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
 import "./header.css"
 
-const Header = ({ authorized, user }) => {
+const Header = ({ authorized, user, setUser, setAuthorized }) => {
   const navigate = useNavigate();
 
   const handleLoginClick = () => {
     navigate('/login');
   };
 
-const handleLogout = async () => {
-  try {
-    await fetch("https://expense-tracker-pachamuthu-k5r3.vercel.app/api/auth/logout", {
-      method: "POST",
-      credentials: "include",
-    });
+  const handleLogout = async (e) => {
 
-    localStorage.removeItem("user");
+    try {
+      const res = await fetch("http://localhost:3333/api/auth/logout", {
+        method: "POST",
+        credentials: "include",
+      });
 
-    window.location.href = "/login";
-  } catch (error) {
-    console.error("Logout failed", error);
-  }
-};
+      if (res.ok) {
+        setUser(null)
+        setAuthorized(false)
+      }
+
+    } catch (error) {
+      console.error("Logout failed", error);
+    }
+  };
 
 
   const handleHomeClick = () => {

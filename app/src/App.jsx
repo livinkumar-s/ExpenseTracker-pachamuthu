@@ -15,7 +15,7 @@ function App() {
   return (
     <CookiesProvider>
       <div className="App">
-        <Header user={user} authorized={authorized} />
+        <Header setUser={setUser} user={user} authorized={authorized} setAuthorized={setAuthorized}/>
         <Routes>
           <Route path="/" element={
             <PrivateRoute setUser={setUser} authorized={authorized} setAuthorized={setAuthorized}>

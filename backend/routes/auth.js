@@ -188,21 +188,13 @@ router.get('/me', async (req, res) => {
     }
 });
 
-// @desc    Logout user / Clear token
-// @route   GET /api/auth/logout
-// @access  Private
-router.get('/logout', (req, res) => {
-    res.json({
-        success: true,
-        message: 'Logged out successfully'
-    });
-});
 
 router.post("/logout", (req, res) => {
     res.clearCookie("token", {
         httpOnly: true,
         secure: true,
-        sameSite: "strict",
+        sameSite: "none",
+        path: "/", 
     });
 
     res.status(200).json({
