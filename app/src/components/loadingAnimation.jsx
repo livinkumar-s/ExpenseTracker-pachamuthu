@@ -2,6 +2,8 @@ import React from 'react';
 import './loadingAnimation.css';
 
 const LoadingAnimation = () => {
+  console.log(123);
+  
   return (
     <div className="loading-container">
       <div className="loading-text">

@@ -1,7 +1,8 @@
 import { Navigate } from "react-router-dom";
 import { useEffect, useState } from "react";
+import LoadingAnimation from "./loadingAnimation";
 
-const PrivateRoute = ({ children, authorized, setAuthorized,setUser,loading, setLoading}) => {
+const PrivateRoute = ({ children, authorized, setAuthorized, setUser, loading, setLoading }) => {
 
     useEffect(() => {
         const checkAuth = async () => {
@@ -30,7 +31,7 @@ const PrivateRoute = ({ children, authorized, setAuthorized,setUser,loading, set
 
     if (loading) return null; // or loader
 
-    return authorized ? children : <Navigate to="/login" />;
+    return authorized ? (loading ? <LoadingAnimation /> : children) : <Navigate to="/login" />;
 };
 
 export default PrivateRoute;

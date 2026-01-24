@@ -5,8 +5,7 @@ import Home from "./components/home.jsx"
 import Header from './components/header.jsx'
 import { CookiesProvider } from 'react-cookie'
 import LoginPage from './components/login.jsx'
-import PrivateRoute from './components/PrivateRoute.jsx'
-import LoadingAnimation from "./components/loadingAnimation.jsx"
+import PrivateRoute from './components/PrivateRoute.jsx';
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -22,7 +21,7 @@ function App() {
           <Route path="/" element={
             <PrivateRoute loading={loading} setLoading={setLoading} setUser={setUser} authorized={authorized} setAuthorized={setAuthorized}>
               {
-                loading ? <LoadingAnimation /> : <Home />
+                <Home />
               }
             </PrivateRoute>
           } />
